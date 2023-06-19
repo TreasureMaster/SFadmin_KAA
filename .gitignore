@@ -1,0 +1,5 @@
+# Ansible files
+ansible/*
+!playbooks/
+!common/
+*.pub
