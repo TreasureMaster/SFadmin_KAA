@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    server_ip: 51.250.23.254
+  tasks:
+  - name: test vars
+    # debug: "msg='Debug variable testing: {{ client }}'"
+    debug: "msg='Настройки клиента {{ ansible_ssh_host }} для сервера {{ server_ip }}'"
