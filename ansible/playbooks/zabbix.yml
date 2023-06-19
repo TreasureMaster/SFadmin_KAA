@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    server_ip: 51.250.23.254
+  tasks:
+  -  name: Install zabbix-agent on Ubuntu
+     apt:
+        name=zabbix-agent
+        state=latest
+     when:
+        ansible_os_family == "Debian"
+     notify:
+        zabbix-agent systemd
+
+
+  -  name: Ansible replace string Server zabbix-agent
+     replace:
+           path: /etc/zabbix/zabbix_agentd.conf
+           regexp: 'Server=127.0.0.1'
+           replace: 'Server= {{ server_ip }}'
+
+
+  -  name: Ansible replace string ServerActive zabbix-agent
+     replace:
+           path: /etc/zabbix/zabbix_agentd.conf
+           regexp: 'ServerActive=127.0.0.1'
+           replace: 'ServerActive= {{ server_ip }}'
+
+
+  -  name: Ansible replace string Hostname zabbix-agent
+     replace:
+           path: /etc/zabbix/zabbix_agentd.conf
+           regexp: '# Hostname='
+           replace: 'Hostname= {{ ansible_hostname }}'
+
+
+  handlers:
+  - name: zabbix-agent systemd
+    systemd:
+     name: zabbix-agent.service
+     enabled: yes
+     state: started
