@@ -1,0 +1,8 @@
+# Ansible files
+ansible/*
+!playbooks/
+!common/
+*.pub
+
+# My files
+tmp/
